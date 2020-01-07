@@ -1,8 +1,18 @@
-<?php $sidebar_config = cpotheme_get_sidebar_position(); ?>
-<?php if ( 'none' != $sidebar_config ) : ?>
+<?php
+/**
+ * The sidebar containing the main widget area.
+ *
+ * @link    https://developer.wordpress.org/themes/basics/template-files/#template-partials
+ *
+ * @package Shapely
+ */ ?>
 
-<aside id="sidebar" class="sidebar sidebar-primary">
-	<?php dynamic_sidebar( 'primary-widgets' ); ?>
-</aside>
+<?php
+if ( ! is_active_sidebar( 'sidebar-1' ) || ! shapely_show_sidebar() ) {
+	return;
+}
+?>
 
-<?php endif; ?>
+<aside id="secondary" class="widget-area col-md-4 hidden-sm" role="complementary">
+	<?php dynamic_sidebar( 'sidebar-1' ); ?>
+</aside><!-- #secondary -->

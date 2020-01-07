@@ -1,31 +1,57 @@
-<?php get_header(); ?>
+<?php
+/**
+ * The template for displaying search results pages.
+ *
+ * @link    https://developer.wordpress.org/themes/basics/template-hierarchy/#search-result
+ *
+ * @package Shapely
+ */
+get_header();
+$layout_class = shapely_get_layout_class(); ?>
+	<div class="row">
+		<?php
+		if ( $layout_class == 'sidebar-left' ):
+			get_sidebar();
+		endif;
+		?>
+		<section id="primary" class="content-area col-md-8 mb-xs-24 <?php echo esc_attr( $layout_class ); ?>">
+			<main id="main" class="site-main" role="main">
 
-<?php get_template_part( 'template-parts/element', 'page-header' ); ?>
+				<?php
+				if ( have_posts() ) : ?>
 
-<div id="main" class="main">
-	<div class="container">
-		<section id="content" class="content">
-			<?php do_action( 'cpotheme_before_content' ); ?>
-			<?php
-			if ( have_posts() ) :
-				while ( have_posts() ) :
-					the_post();
-?>
-			<article class="search-result" id="post-<?php the_ID(); ?>"> 			
-				<h4 class="search-title heading">
-					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" rel="bookmark"><?php the_title(); ?></a>
-				</h4>
-				<div class="search-byline">
-					<?php the_permalink(); ?>
-				</div>
-			</article>
-			<?php endwhile; ?>
-			<?php cpotheme_numbered_pagination(); ?>
-			<?php endif; ?>
-			<?php do_action( 'cpotheme_after_content' ); ?>
-		</section>
-		<?php get_sidebar(); ?>
+					<header class="entry-header nolist">
+						<h1 class="post-title entry-title"><?php printf( esc_html__( 'Search Results for: %s', 'shapely' ), '<span>' . get_search_query() . '</span>' ); ?></h1>
+					</header><!-- .page-header -->
+
+					<?php
+					/* Start the Loop */
+					while ( have_posts() ) : the_post();
+
+						/**
+						 * Run the loop for the search to output the results.
+						 * If you want to overload this in a child theme then include a file
+						 * called content-search.php and that will be used instead.
+						 */
+						get_template_part( 'template-parts/content', 'search' );
+
+					endwhile;
+
+					shapely_pagination();
+				else :
+
+					get_template_part( 'template-parts/content', 'none' );
+
+				endif; ?>
+
+			</main><!-- #main -->
+		</section><!-- #primary -->
+
+		<?php
+		if ( $layout_class == 'sidebar-right' ):
+			get_sidebar();
+		endif;
+		?>
 	</div>
-</div>
-
-<?php get_footer(); ?>
+<?php
+get_footer();
